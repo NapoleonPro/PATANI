@@ -1,6 +1,11 @@
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
+
+# Muat environment variables dari .env file
+load_dotenv()
+
 from routes.routes import register_routes
 from routes.rag_core import initialize_rag_system
 from routes.config import SECRET_KEY, SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TRACK_MODIFICATIONS
