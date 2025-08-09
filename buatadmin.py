@@ -8,7 +8,6 @@ from datetime import datetime
 # Anda bisa mengubah password di sini jika mau
 ADMIN_EMAIL = 'admin@patani.com'
 ADMIN_PASSWORD = 'admin123'
-# -------------------------
 
 with app.app_context():
     # 1. Cek apakah admin sudah ada
