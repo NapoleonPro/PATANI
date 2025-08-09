@@ -19,9 +19,9 @@ def _normalize_text(text):
 
 # Expanded stopwords including 'cara', interrogatives, and common fillers
 STOPWORDS = set([
-    'dan','atau','yang','di','ke','dari','untuk','pada','dengan','apa','bagaimana','adalah','saya','ini','itu',
+    'dan','atau','yang','di','ke','dari','untuk','pada','dengan','apa','bagaimana','adalah','saya','ini','itu','kenapa','mengapa',
     'the','of','in','to','a','is','are','it','as','by','an','be','on','for','was','were','has','have','had','will','can',
-    'petani','chatbot','tolong','mohon','apakah','seperti','agar','yang','jika','bila','dapat','bisa','cara'
+    'petani','chatbot','tolong','mohon','apakah','seperti','agar','yang','jika','bila','dapat','bisa','cara','mengatasi'
 ])
 
 # Some phrase starters to avoid as topics

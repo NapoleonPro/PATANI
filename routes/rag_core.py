@@ -21,14 +21,20 @@ logger = logging.getLogger(__name__)
 # Thread-local storage
 thread_local = threading.local()
 
-# Konfigurasi API key Gemini
-GEMINI_API_KEY = "AIzaSyBZdzvVraIbw4MwYNVxvPoF8i-gwTVs8C0"
-genai.configure(api_key=GEMINI_API_KEY)
+# Konfigurasi API key Gemini - WAJIB diatur di environment variables
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+if not GEMINI_API_KEY:
+    # Di lingkungan produksi, ini akan menyebabkan aplikasi gagal start, yang mana itu bagus
+    # karena kita tidak mau aplikasi berjalan tanpa API key.
+    logger.warning("GEMINI_API_KEY environment variable not set. RAG system might fail.")
+else:
+    genai.configure(api_key=GEMINI_API_KEY)
 
 # Configuration
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 DOWNLOAD_FOLDER = os.path.join(PROJECT_ROOT, 'jurnal_ilmiah')
-CACHE_FOLDER = os.path.join(PROJECT_ROOT, 'cache')
+# Path untuk cache, di-override oleh environment variable CACHE_DIR di produksi
+CACHE_FOLDER = os.getenv('CACHE_DIR', os.path.join(PROJECT_ROOT, 'cache'))
 EMBEDDING_CACHE_FILE = os.path.join(CACHE_FOLDER, 'embeddings_cache.pkl')
 INDEX_CACHE_FILE = os.path.join(CACHE_FOLDER, 'faiss_index.bin')
 DOCS_CACHE_FILE = os.path.join(CACHE_FOLDER, 'documents_cache.pkl')
@@ -333,14 +339,7 @@ PERTANYAAN: {user_question}
 JAWABAN PRAKTIS:"""
 
         try:
-            response = self.model_gen.generate_content(
-                prompt,
-                generation_config=genai.types.GenerationConfig(
-                    temperature=0.3,  # Lower temperature for more consistent responses
-                    top_p=0.8,
-                    top_k=40
-                )
-            )
+            response = self.model_gen.generate_content(prompt)
             return response.text
         except Exception as e:
             logger.error(f"Error generating response: {e}")
